@@ -56,3 +56,10 @@ These changes equate to roughly a 20-30% performance improvement with many fewer
 The recommdation I'd put forward here is having a better `HttpHeaders` creation should be a higher priority as it contains fewer logic changes
 and is a smaller change set, but both changes should be target where optimizing header parsing could possibly leverage internal APIs that couldn't
 be used in this benchmark.
+
+## Future investigations
+
+This benchmark was highly targeted at the processing of headers and doesn't touch on the surrounding code that processes header lines. There
+could be a future investigation there to see if any additional state tracking could further optimize header processing. An example could be
+tracking the colon index while reading the bytes from the network to remove the `String.indexOf(':')` call or possibly validating header names
+and values while reading from the network.
