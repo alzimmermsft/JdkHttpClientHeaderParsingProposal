@@ -97,7 +97,7 @@ public class MyBenchmark {
         "x-ms-version: 2024-08-04"
     );
 
-    @Fork(value = 1)//, jvmArgs = {"-XX:+FlightRecorder", "-XX:StartFlightRecording=settings=\"D:\\GitHub\\azure-sdk-for-java\\eng\\PerfAutomation.jfc\",filename=baseline.jfr,maxsize=1gb"})
+    @Fork(value = 1, jvmArgs = {"-XX:+FlightRecorder", "-XX:StartFlightRecording=settings=\"D:\\GitHub\\azure-sdk-for-java\\eng\\PerfAutomation.jfc\",filename=baseline.jfr,maxsize=1gb"})
     @Benchmark
     public void java21ParsingBaseline(Blackhole blackhole) {
         // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
@@ -189,13 +189,13 @@ public class MyBenchmark {
     //  Trim and validate the header value in the same loop
     //  Work with TreeMap directly and use a custom constructor of HttpHeaders (real case would effectively be a no-op
     //  but in this case we have a method to explain the reasoning)
-    @Fork(value = 1)//, jvmArgs = {"-XX:+FlightRecorder", "-XX:StartFlightRecording=settings=\"D:\\GitHub\\azure-sdk-for-java\\eng\\PerfAutomation.jfc\",filename=proposal.jfr,maxsize=1gb"})
+    @Fork(value = 1, jvmArgs = {"-XX:+FlightRecorder", "-XX:StartFlightRecording=settings=\"D:\\GitHub\\azure-sdk-for-java\\eng\\PerfAutomation.jfc\",filename=proposal.jfr,maxsize=1gb"})
     @Benchmark
     public void proposal(Blackhole blackhole) {
         // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
         // Put your benchmark code here.
         TreeMap<String, List<String>> intermediate = new TreeMap<>(CASE_INSENSITIVE_ORDER);
-        RAW_HEADERS.forEach(header -> addHeaderFromString(header, intermediate));
+        RAW_HEADERS.forEach(header -> addHeaderFromStringProposal(header, intermediate));
         blackhole.consume(proposalOfInternalOptimizedHttpHeadersOf(intermediate));
     }
 
@@ -219,7 +219,6 @@ public class MyBenchmark {
 
     // This could be inlined into addHeaderFromStringProposal but this gives us better JFR data.
     private static String validateAndCreateName(String rawHttpHeader, int colonIndex) {
-        String name;
         char[] chars = new char[colonIndex]; // colonIndex is the length of the name
         rawHttpHeader.getChars(0, colonIndex, chars, 0);
 
